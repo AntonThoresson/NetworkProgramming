@@ -39,7 +39,7 @@ def serversideGetPlaySocket():
     sockS.bind(("127.0.0.1", port))
     sockS.listen(1)
 
-    winScore = 3 
+    winScore = 10 
     serverScore = 0
     clientScore = 0
 
@@ -73,15 +73,14 @@ def serversideGetPlaySocket():
                 sockC.sendall(bytearray(tieMessage, "ascii"))
 
             if serverScore | clientScore is winScore:
-                sockC.close() 
+                print("Game Over, final score {} - {}".format(serverScore, clientScore))
                 print("Disconnect from {}".format(addr))
+                sockC.close() 
 
 
 def clientsideGetPlaySocket(host):
     sock = socket.socket(family=socket.AF_INET, type=socket.SOCK_STREAM)
     sock.connect((host, port))
-    global serverScore
-    global clientScore
     
     while True:
         clientAnswer = input("Enter a move [R/S/P]: ")
@@ -89,6 +88,11 @@ def clientsideGetPlaySocket(host):
 
         data = sock.recv(1024)
         resultData = sock.recv(1024)
+        if not resultData:
+            print("Game Over, final score {}".format(result))
+            sock.close()
+            break
+
         result = resultData.decode("ascii")
         if result == "Its a tie":
             print(result)
