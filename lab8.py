@@ -23,7 +23,7 @@ class Application(tk.Frame):
         self.ipPortLbl.pack(side="left")
         #
         self.ipPort = tk.Entry(self.groupCon, width=20)
-        self.ipPort.insert(tk.END, 'localhost:80000')
+        self.ipPort.insert(tk.END, 'localhost:60003')
         # if the focus is on this text field and you hit 'Enter',
         # it should (try to) connect
         self.ipPort.bind('<Return>', connectHandler)
